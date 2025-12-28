@@ -1,10 +1,12 @@
 #include "simple_atm_system.h"
+#include <cmath>
 #include <iostream>
+
 
 using namespace std;
 
 int main() {
-
+//pin for using atm
   do {
     cout << "Enter PIN: ";
     cin >> pin;
@@ -16,11 +18,12 @@ int main() {
       break;
     } else {
       cout << "Wrong PIN!" << endl;
-      cout << attempts << " attempts remaining"
-           << endl; // RED: added endl for readability
+      cout << attempts << " attempts remaining" << endl;
     }
 
   } while (attempts != 0);
+
+//after attempt completion
 
   if (!isloggedin) {
     cout << "   Account locked!    " << endl;
@@ -36,18 +39,22 @@ int main() {
       cin >> select;
 
       switch (select) {
+      //withdraw system
       case 1:
         cout << "Enter withdrawal amount: ";
         cin >> withdrawl;
-        if (withdrawl > balance || withdrawl <= 0) {
+        if (withdrawl > balance || withdrawl <= 0 ||
+            fmod(withdrawl, 500) != 0) {
           cout << "Invalid amount!" << endl;
+          if (fmod(withdrawl, 500) != 0) {
+            cout << "Error: Amount must be a multiple of 500." << endl;
+          }
         } else {
           balance -= withdrawl;
-          cout << "Withdrawal successful. Current balance: " << balance
-               << endl; // RED: show balance
+          cout << "Withdrawal successful. Current balance: " << balance << endl;
         }
         break;
-
+//diposit 
       case 2:
         cout << "Enter deposit amount: ";
         cin >> deposit;
@@ -55,15 +62,14 @@ int main() {
           cout << "Invalid deposit amount!" << endl;
         } else {
           balance += deposit;
-          cout << "Deposit successful. Current balance: " << balance
-               << endl; // RED: show balance
+          cout << "Deposit successful. Current balance: " << balance << endl;
         }
         break;
-
+//current balance
       case 3:
         cout << "Current balance: " << balance << endl;
         break;
-
+//change pin
       case 4:
         cout << "Enter old PIN: ";
         cin >> old_pin;
@@ -77,17 +83,15 @@ int main() {
             cin >> confirm_pin;
             if (new_pin == confirm_pin) {
               setpin = new_pin;
-              cout << "PIN changed successfully."
-                   << endl; // RED: success message
+              cout << "PIN changed successfully." << endl;
               break;
             } else {
-              cout << "PINs do not match. Try again."
-                   << endl; // RED: retry message
+              cout << "PINs do not match. Try again." << endl;
             }
           } while (true);
         }
         break;
-
+//for Exit
       case 5:
         cout << "Thanks for using ATM" << endl;
         break;
